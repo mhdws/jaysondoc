@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-ps-theme="violet">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stay Unseen — view stories and read messages without sending the signal</title>
+<meta name="description" content="Stay Unseen is a browser extension that blocks Instagram, Facebook and Messenger story views, read receipts and typing indicators before they leave your browser. No server, no account, nothing collected." />
+<meta name="theme-color" content="#c084fc" />
+<meta property="og:title" content="Stay Unseen — look first, stay unseen" />
+<meta property="og:description" content="Blocks story views, read receipts and typing indicators on Instagram, Facebook and Messenger. Everything stays in your browser." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="assets/popup-main.png" />
+<link rel="icon" type="image/png" href="assets/icon128.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<script>
+// Removed before first paint. If it never runs, styles.css's html.no-js rules
+// keep every revealed section visible and stack the gallery panels.
+document.documentElement.classList.remove("no-js");
+</script>
+</head>
+<body>
+<div class="ps-app" id="psApp" data-ps-theme="violet">
+
+  <canvas id="ps3dCanvas" aria-hidden="true"></canvas>
+  <div class="ps-grid-3d" aria-hidden="true"></div>
+  <div class="ps-orb-3d one" aria-hidden="true"></div>
+  <div class="ps-orb-3d two" aria-hidden="true"></div>
+  <div class="ps-orb-3d three" aria-hidden="true"></div>
+  <div class="ps-noise-overlay" aria-hidden="true"></div>
+
+  <header class="ps-header ps-container">
+    <a class="ps-brand-mark" href="#top">
+      <span class="ps-brand-badge"><img src="assets/icon128.png" alt="" width="26" height="26" /></span>
+      <span class="ps-brand-text">Stay Unseen</span>
+    </a>
+
+    <div class="ps-header-tools">
+      <nav class="ps-nav" aria-label="Sections">
+        <a href="#stops">What it stops</a>
+        <a href="#screens">The popup</a>
+        <a href="#how">How it works</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#install">Install</a>
+      </nav>
+
+      <span class="ps-status-pill">v1.0.2 · local only</span>
+
+      <div class="ps-theme-switch" role="group" aria-label="Accent colour">
+        <button type="button" class="ps-theme-btn" data-ps-theme-btn="violet" style="--ps-swatch-h: 272" aria-pressed="true">
+          <span class="ps-theme-dot" aria-hidden="true"></span><span class="ps-theme-label">Violet</span>
+        </button>
+        <button type="button" class="ps-theme-btn" data-ps-theme-btn="blue" style="--ps-swatch-h: 210" aria-pressed="false">
+          <span class="ps-theme-dot" aria-hidden="true"></span><span class="ps-theme-label">Blue</span>
+        </button>
+        <button type="button" class="ps-theme-btn" data-ps-theme-btn="green" style="--ps-swatch-h: 139" aria-pressed="false">
+          <span class="ps-theme-dot" aria-hidden="true"></span><span class="ps-theme-label">Green</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- hero -->
+    <section class="ps-hero-grid ps-container">
+      <div class="ps-intro-content" id="psIntro">
+        <p class="ps-eyebrow-tag">Privacy for social browsing</p>
+
+        <h1 class="ps-main-title">
+          <span class="ps-title-line">Look first.</span>
+          <span class="ps-title-line">Stay unseen.</span>
+        </h1>
+
+        <p class="ps-bio-text">
+          Open a story, read a message, start typing a reply — Instagram, Facebook and
+          Messenger normally report all three back to the other person. Stay Unseen
+          <strong>stops those signals inside your browser</strong>, before they are sent.
+          Six independent toggles, a counter for everything it blocked, and no server
+          anywhere in the picture.
+        </p>
+
+        <p class="ps-section-label">Get it</p>
+
+        <div class="ps-action-grid">
+          <a class="ps-action-card is-primary" href="downloads/stay-unseen-chrome-1.0.2.zip" download>
+            <span class="ps-action-info">
+              <span class="ps-action-tag">Ch</span>
+              <span>Chrome<span class="ps-action-sub">zip · 100 kb · v1.0.2</span></span>
+            </span>
+            <span class="ps-action-arrow" aria-hidden="true">↓</span>
+          </a>
+          <a class="ps-action-card is-primary" href="downloads/stay-unseen-edge-1.0.2.zip" download>
+            <span class="ps-action-info">
+              <span class="ps-action-tag">Ed</span>
+              <span>Edge<span class="ps-action-sub">zip · 100 kb · v1.0.2</span></span>
+            </span>
+            <span class="ps-action-arrow" aria-hidden="true">↓</span>
+          </a>
+          <a class="ps-action-card" href="downloads/stay-unseen-firefox-1.0.2.zip" download>
+            <span class="ps-action-info">
+              <span class="ps-action-tag">Fx</span>
+              <span>Firefox<span class="ps-action-sub">zip · 100 kb · v1.0.2</span></span>
+            </span>
+            <span class="ps-action-arrow" aria-hidden="true">↓</span>
+          </a>
+          <a class="ps-action-card" href="#screens">
+            <span class="ps-action-info">
+              <span class="ps-action-tag">01</span>
+              <span>See the popup<span class="ps-action-sub">Every screen, full height</span></span>
+            </span>
+            <span class="ps-action-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- The hero card holds the real popup screenshot at its own 372:795 ratio. -->
+      <div class="ps-popup-stage" id="psStage">
+        <div class="ps-ring-3d" aria-hidden="true"></div>
+        <div class="ps-ring-3d ring-2" aria-hidden="true"></div>
+
+        <div class="ps-card-3d" id="psCard">
+          <div class="ps-card-inner">
+            <img class="ps-popup-img" src="assets/popup-main.png" width="372" height="795"
+                 alt="The Stay Unseen popup: header reading “Protecting Instagram, Facebook & Messenger”, four counters totalling 684 blocked signals, and six feature toggles all switched on." />
+            <div class="ps-holo-grid" aria-hidden="true"></div>
+            <div class="ps-glare" aria-hidden="true"></div>
+            <div class="ps-scan-beam" aria-hidden="true"></div>
+            <div class="ps-scan-line" aria-hidden="true"></div>
+            <div class="ps-hud-corners" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="ps-badge-3d badge-1" aria-hidden="true"><b>684</b><br />signals blocked</div>
+        <div class="ps-badge-3d badge-2" aria-hidden="true">no server<br />nothing leaves</div>
+      </div>
+    </section>
+
+    <!-- what it stops -->
+    <section class="ps-section ps-container" id="stops">
+      <div class="ps-section-head ps-reveal-item">
+        <p class="ps-panel-tag">// three signals</p>
+        <h2 class="ps-section-title">What actually gets <em>stopped</em></h2>
+        <p class="ps-section-copy">
+          Each of these is a separate request the site makes on your behalf. Each has its
+          own toggle, and turning one off restores that site's normal behaviour immediately.
+        </p>
+      </div>
+
+      <div class="ps-signal-grid">
+        <article class="ps-signal ps-reveal-item">
+          <div class="ps-signal-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M1.6 12S5.4 5 12 5s10.4 7 10.4 7-3.8 7-10.4 7S1.6 12 1.6 12Z"/><path d="M3 21 21 3"/></svg>
+          </div>
+          <h3>Story and reel views</h3>
+          <p>
+            The “seen” write that puts your name in the viewer list is cancelled. You still
+            see the story; the ring still opens. Your name does not arrive.
+          </p>
+          <div class="ps-chip-row">
+            <span class="ps-chip">Instagram Stories</span>
+            <span class="ps-chip">Facebook Stories</span>
+          </div>
+        </article>
+
+        <article class="ps-signal ps-reveal-item">
+          <div class="ps-signal-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 6.5h18v11H3z"/><path d="M3 7l9 6.5L21 7"/><path d="M3 21 21 3"/></svg>
+          </div>
+          <h3>Message read receipts</h3>
+          <p>
+            Read your DMs without the other side's message flipping to “Seen”. The
+            mark-as-read call never leaves. Optionally the unread dot stays in your own
+            interface too, so you can find the thread again.
+          </p>
+          <div class="ps-chip-row">
+            <span class="ps-chip">Instagram DMs</span>
+            <span class="ps-chip">Facebook Messages</span>
+            <span class="ps-chip">Messenger</span>
+          </div>
+        </article>
+
+        <article class="ps-signal ps-reveal-item">
+          <div class="ps-signal-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 4.5h16v11H9l-5 4.5z"/><circle cx="9" cy="10" r="1"/><circle cx="12.5" cy="10" r="1"/><circle cx="16" cy="10" r="1"/></svg>
+          </div>
+          <h3>Typing indicators</h3>
+          <p>
+            Draft, rewrite and delete a reply without the bubbling dots appearing on their
+            screen. Sent through websocket frames as often as plain requests, so both paths
+            are covered.
+          </p>
+          <div class="ps-chip-row">
+            <span class="ps-chip">Instagram typing</span>
+            <span class="ps-chip">Messenger typing</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <hr class="ps-rule" />
+
+    <!-- screenshot gallery -->
+    <section class="ps-section ps-container" id="screens">
+      <div class="ps-section-head ps-reveal-item">
+        <p class="ps-panel-tag">// the whole interface</p>
+        <h2 class="ps-section-title">The popup, <em>screen by screen</em></h2>
+        <p class="ps-section-copy">
+          Real captures of the extension's own popup — its markup, its stylesheet, its
+          script — at the exact 372&nbsp;px width the browser gives it. Nothing is cropped:
+          the taller states scroll inside the frame just as they do in the toolbar.
+        </p>
+      </div>
+
+      <div class="ps-shots">
+        <div class="ps-tablist" role="tablist" aria-label="Popup screens">
+          <button type="button" class="ps-tab" role="tab" id="tab-main" aria-controls="panel-main" aria-selected="true">Main</button>
+          <button type="button" class="ps-tab" role="tab" id="tab-feature" aria-controls="panel-feature" aria-selected="false" tabindex="-1">Per-feature</button>
+          <button type="button" class="ps-tab" role="tab" id="tab-paused" aria-controls="panel-paused" aria-selected="false" tabindex="-1">Paused</button>
+          <button type="button" class="ps-tab" role="tab" id="tab-status" aria-controls="panel-status" aria-selected="false" tabindex="-1">Status</button>
+          <button type="button" class="ps-tab" role="tab" id="tab-diag" aria-controls="panel-diag" aria-selected="false" tabindex="-1">Diagnostics</button>
+          <button type="button" class="ps-tab" role="tab" id="tab-light" aria-controls="panel-light" aria-selected="false" tabindex="-1">Light mode</button>
+        </div>
+
+        <div class="ps-shot-panel is-active" role="tabpanel" id="panel-main" aria-labelledby="tab-main">
+          <div class="ps-shot-layout">
+            <figure class="ps-shot-frame">
+              <div class="ps-shot-bar"><span class="ps-shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Stay Unseen — popup</span></div>
+              <div class="ps-shot-view">
+                <img src="assets/popup-main.png" width="372" height="795" loading="lazy"
+                     alt="Popup with all six features enabled: status line reads “Protecting Instagram, Facebook & Messenger”, counters read 684 blocked all time, 260 story views, 289 read receipts, 135 typing signals." />
+              </div>
+              <figcaption class="ps-shot-foot"><span>372 × 795 css px</span><span>everything on</span></figcaption>
+            </figure>
+            <div class="ps-shot-note">
+              <p class="ps-panel-tag">// default state</p>
+              <h3>Everything on</h3>
+              <p>
+                The header states what is currently protected. Below it, four counters: the
+                all-time total, then story views, read receipts and typing signals separately,
+                so you can tell which kind of signal your own browsing actually produces.
+              </p>
+              <p>
+                The six feature rows are the whole control surface. <em>Display</em> holds the
+                one preference that changes your interface rather than the network — keeping
+                the unread dot on threads you opened while blocking was on.
+              </p>
+              <div class="ps-readout">
+                <div><b>684</b><span>blocked all time</span></div>
+                <div><b>260</b><span>story views</span></div>
+                <div><b>289</b><span>read receipts</span></div>
+                <div><b>135</b><span>typing signals</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ps-shot-panel" role="tabpanel" id="panel-feature" aria-labelledby="tab-feature" hidden>
+          <div class="ps-shot-layout">
+            <figure class="ps-shot-frame">
+              <div class="ps-shot-bar"><span class="ps-shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Stay Unseen — mixed toggles</span></div>
+              <div class="ps-shot-view">
+                <img src="assets/popup-per-feature.png" width="372" height="795" loading="lazy"
+                     alt="Popup with Instagram typing, Facebook Stories and Messenger typing switched off; those rows are dimmed while the other three stay on." />
+              </div>
+              <figcaption class="ps-shot-foot"><span>372 × 795 css px</span><span>3 of 6 off</span></figcaption>
+            </figure>
+            <div class="ps-shot-note">
+              <p class="ps-panel-tag">// independent control</p>
+              <h3>One toggle per signal</h3>
+              <p>
+                Nothing is bundled. Here Instagram typing, Facebook Stories and Messenger
+                typing are off — their rows dim and their toggles go grey, while Instagram
+                Stories, Instagram DMs and Facebook Messages keep blocking.
+              </p>
+              <p>
+                The status line follows: it names only what is still protected. Counters are
+                not reset by switching a feature off, so the history you have built up survives.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ps-shot-panel" role="tabpanel" id="panel-paused" aria-labelledby="tab-paused" hidden>
+          <div class="ps-shot-layout">
+            <figure class="ps-shot-frame">
+              <div class="ps-shot-bar"><span class="ps-shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Stay Unseen — paused</span></div>
+              <div class="ps-shot-view">
+                <img src="assets/popup-paused.png" width="372" height="795" loading="lazy"
+                     alt="Popup with every feature off. The status line warns “Paused — receipts are being sent” and all six toggles are grey." />
+              </div>
+              <figcaption class="ps-shot-foot"><span>372 × 795 css px</span><span>all off</span></figcaption>
+            </figure>
+            <div class="ps-shot-note">
+              <p class="ps-panel-tag">// nothing hidden</p>
+              <h3>Paused says so plainly</h3>
+              <p>
+                With everything off the header does not go quiet or neutral — it reads
+                <code>Paused — receipts are being sent</code>. A privacy tool that looks the
+                same whether or not it is working is worse than no tool, so this state is
+                deliberately loud.
+              </p>
+              <p>
+                This is also exactly what a normal browser does all the time. Every signal
+                listed above is being reported.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ps-shot-panel" role="tabpanel" id="panel-status" aria-labelledby="tab-status" hidden>
+          <div class="ps-shot-layout">
+            <figure class="ps-shot-frame">
+              <div class="ps-shot-bar"><span class="ps-shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Stay Unseen — status drawer</span></div>
+              <div class="ps-shot-view">
+                <img src="assets/popup-status.png" width="372" height="1086" loading="lazy"
+                     alt="Popup with the Status drawer expanded, showing network blocking active (DNR), the Instagram page patches live with signal counts, the Facebook rows not detected, and the last site loaded with the extension." />
+              </div>
+              <figcaption class="ps-shot-foot"><span>372 × 1086 css px</span><span>status expanded</span></figcaption>
+            </figure>
+            <div class="ps-shot-note">
+              <p class="ps-panel-tag">// is it actually running</p>
+              <h3>Status, per layer</h3>
+              <p>
+                Blocking happens in two places, so the drawer reports both. <code>Network
+                blocking</code> is the browser-level ruleset — <code>active (DNR)</code> on
+                Chrome and Edge, <code>active (webRequest)</code> on Firefox. Each patch row
+                is the in-page interception for one feature, with how many signals it caught
+                at the network layer and in the page.
+              </p>
+              <p>
+                Rows honestly read <code>not detected</code> when a patch has not run: this
+                capture was taken with an Instagram tab in front, so the Facebook and
+                Messenger rows have nothing to report yet.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ps-shot-panel" role="tabpanel" id="panel-diag" aria-labelledby="tab-diag" hidden>
+          <div class="ps-shot-layout">
+            <figure class="ps-shot-frame">
+              <div class="ps-shot-bar"><span class="ps-shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Stay Unseen — diagnostics</span></div>
+              <div class="ps-shot-view">
+                <img src="assets/popup-diagnostics.png" width="372" height="1539" loading="lazy"
+                     alt="Popup with diagnostics shown: Recent blocks and Seen signals detected are expanded with timestamped endpoint rows, and the WebSocket frames, IG network log and Seen/read modules drawers are listed below." />
+              </div>
+              <figcaption class="ps-shot-foot"><span>372 × 1539 css px</span><span>scroll the frame</span></figcaption>
+            </figure>
+            <div class="ps-shot-note">
+              <p class="ps-panel-tag">// verify it yourself</p>
+              <h3>Receipts for the blocking</h3>
+              <p>
+                Optional, off by default, and the reason you do not have to take any of this
+                on trust. Five capped lists: recent blocks, the requests that looked like
+                seen signals, outgoing websocket frames, the raw Instagram network log, and
+                the page modules the patch classified.
+              </p>
+              <p>
+                Message text never reaches these lists — the fields holding what you typed
+                are replaced with <code>&lt;user_text&gt;</code> first. One action often trips
+                several suppressions at once, which is why a row can read “3 signals” while
+                the counter moves by one.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ps-shot-panel" role="tabpanel" id="panel-light" aria-labelledby="tab-light" hidden>
+          <div class="ps-shot-layout">
+            <figure class="ps-shot-frame">
+              <div class="ps-shot-bar"><span class="ps-shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Stay Unseen — light scheme</span></div>
+              <div class="ps-shot-view">
+                <img src="assets/popup-main-light.png" width="372" height="795" loading="lazy"
+                     alt="The same popup rendered in light mode: white panels, dark text, the same violet accent." />
+              </div>
+              <figcaption class="ps-shot-foot"><span>372 × 795 css px</span><span>prefers-color-scheme: light</span></figcaption>
+            </figure>
+            <div class="ps-shot-note">
+              <p class="ps-panel-tag">// follows your system</p>
+              <h3>Light mode, same popup</h3>
+              <p>
+                There is no theme setting to find. The popup follows
+                <code>prefers-color-scheme</code>, so it matches whatever the rest of your
+                browser is doing.
+              </p>
+              <p>
+                Same markup, same layout, same violet accent — only the surface and text
+                tokens change.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="ps-rule" />
+
+    <!-- how it works -->
+    <section class="ps-section ps-container" id="how">
+      <div class="ps-section-head ps-reveal-item">
+        <p class="ps-panel-tag">// mechanism</p>
+        <h2 class="ps-section-title">Two layers, because <em>one is not enough</em></h2>
+        <p class="ps-section-copy">
+          Some signals go out as ordinary POSTs that a network rule can cancel outright.
+          Others are GraphQL calls and websocket frames indistinguishable by address from
+          the traffic that makes the site work. So Stay Unseen works at both levels.
+        </p>
+      </div>
+
+      <div class="ps-layer-grid">
+        <article class="ps-layer ps-reveal-item">
+          <p class="ps-layer-num">Layer 01</p>
+          <h3>The network rules</h3>
+          <p>
+            A packaged ruleset cancels the specific POST and PUT requests that report a
+            view, a read or typing activity. Chrome and Edge use
+            <code>declarativeNetRequest</code>; Firefox uses blocking
+            <code>webRequest</code>. Rules are restricted to instagram.com, facebook.com and
+            messenger.com and ship inside the extension — nothing is fetched at runtime.
+          </p>
+        </article>
+
+        <article class="ps-layer ps-reveal-item">
+          <p class="ps-layer-num">Layer 02</p>
+          <h3>The page patch</h3>
+          <p>
+            At <code>document_start</code>, before the site's own code runs, Stay Unseen
+            wraps <code>fetch</code>, <code>XMLHttpRequest</code>,
+            <code>WebSocket.send</code> and the page's module registry. Outgoing bodies are
+            matched in memory against a fixed pattern list; the ones that are seen, read or
+            typing writes are dropped, and everything else passes through untouched.
+          </p>
+        </article>
+
+        <article class="ps-layer ps-reveal-item">
+          <p class="ps-layer-num">Layer 03</p>
+          <h3>Honest counting</h3>
+          <p>
+            Opening one story can trip half a dozen suppressions across both layers. The
+            counter folds signals for the same feature arriving within
+            <code>1500&nbsp;ms</code> into one block, so the number tracks things you did
+            rather than internal retries. The Status drawer keeps the raw per-signal counts
+            if you want them.
+          </p>
+        </article>
+      </div>
+
+      <figure class="ps-figure ps-reveal-item">
+        <div class="ps-figure-frame">
+          <img src="assets/whatitdoes.jpeg" width="1024" height="1024" loading="lazy"
+               alt="Four-panel comparison. Left column, without the extension: a sent message reads “Seen just now” and a story viewer list shows a viewer's photo and name. Right column, with Stay Unseen: the same message reads only “Delivered” and the viewer entry is blank." />
+        </div>
+        <figcaption>
+          Illustration, not a screenshot — the difference the two layers make, side by side.
+          Every popup image on this page is a real capture; this one is drawn.
+        </figcaption>
+      </figure>
+    </section>
+
+    <hr class="ps-rule" />
+
+    <!-- privacy -->
+    <section class="ps-section ps-container" id="privacy">
+      <div class="ps-section-head ps-reveal-item">
+        <p class="ps-panel-tag">// privacy</p>
+        <h2 class="ps-section-title">There is <em>nowhere</em> for your data to go</h2>
+        <p class="ps-section-copy">
+          Stay Unseen has no server. Not an unused one, not a disabled one — there is no
+          backend in the project. Everything it knows lives in your browser's local
+          extension storage, and uninstalling it deletes all of it.
+        </p>
+      </div>
+
+      <div class="ps-privacy-grid">
+        <ul class="ps-tick-list ps-reveal-item">
+          <li><b>No account, email or sign-in.</b> Install it and it works.</li>
+          <li><b>No analytics, telemetry or crash reporting.</b> Nothing is counted anywhere but on your own machine.</li>
+          <li><b>No remote code.</b> Every script and every blocking rule is inside the package you download.</li>
+          <li><b>No browsing history.</b> It has permission for instagram.com, facebook.com and messenger.com and no access at all to any other site.</li>
+          <li><b>Your messages are never stored.</b> Bodies are inspected in memory to make the block-or-allow decision, then forgotten.</li>
+          <li><b>Nothing is sold or shared,</b> because nothing is collected.</li>
+        </ul>
+
+        <div class="ps-reveal-item">
+          <div class="ps-table-wrap">
+            <table class="ps-table">
+              <caption>What is kept on your device</caption>
+              <thead>
+                <tr><th scope="col">Stored</th><th scope="col">Why</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Six on/off settings, one per feature</td><td>So your toggles survive a restart</td></tr>
+                <tr><td>A blocked count per feature</td><td>Powers the counters and the toolbar badge</td></tr>
+                <tr><td>The last 20 blocked requests — URL, feature, timestamp</td><td>Powers the diagnostics panel, so you can confirm it is working</td></tr>
+                <tr><td>The last 30 candidate requests and 20 websocket frames, message text removed</td><td>Lets the popup show which signals it detected, so one that stops being blocked can be diagnosed</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ps-callout">
+            <div>
+              <strong>Why it reads request bodies at all</strong>
+              <p>
+                On Instagram and Messenger, a read receipt and an ordinary message go to the
+                same address. Telling them apart means looking at the body. Before anything
+                is written to a diagnostics list, the fields holding text you typed are
+                replaced with <code>&lt;user_text&gt;</code> — which is also what stops a
+                message containing the word “typing” from being mistaken for a typing signal
+                and dropped.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="ps-rule" />
+
+    <!-- limitations -->
+    <section class="ps-section ps-container" id="limits">
+      <div class="ps-section-head ps-reveal-item">
+        <p class="ps-panel-tag">// limitations</p>
+        <h2 class="ps-section-title">What it <em>cannot</em> do</h2>
+        <p class="ps-section-copy">
+          Worth reading before you install, so nothing here comes as a surprise later.
+        </p>
+      </div>
+
+      <ul class="ps-tick-list is-negative ps-reveal-item">
+        <li><b>Sending still notifies.</b> A message, reaction or story reply is a thing you chose to send — the recipient is told.</li>
+        <li><b>Online status is untouched.</b> Stay Unseen does not hide your active or online indicator.</li>
+        <li><b>Activity from before you installed it cannot be withdrawn.</b> Views already reported stay reported.</li>
+        <li><b>Meta changes its internals.</b> When endpoint names or module names move, a feature can stop blocking until the patterns are updated — the diagnostics lists are there so you can tell when that has happened.</li>
+        <li><b>It is an independent project,</b> not affiliated with, endorsed by, or connected to Meta Platforms, Instagram, Facebook, or Microsoft.</li>
+      </ul>
+    </section>
+
+    <hr class="ps-rule" />
+
+    <!-- install -->
+    <section class="ps-section ps-container" id="install">
+      <div class="ps-section-head ps-reveal-item">
+        <p class="ps-panel-tag">// install</p>
+        <h2 class="ps-section-title">Load it in <em>about a minute</em></h2>
+        <p class="ps-section-copy">
+          Version 1.0.2, built for each browser's own manifest. Download the zip for yours,
+          then load it unpacked.
+        </p>
+      </div>
+
+      <div class="ps-install-grid">
+        <a class="ps-action-card is-primary ps-reveal-item" href="downloads/stay-unseen-chrome-1.0.2.zip" download>
+          <span class="ps-action-info">
+            <span class="ps-action-tag">Ch</span>
+            <span>Chrome build<span class="ps-action-sub">declarativeNetRequest · MV3</span></span>
+          </span>
+          <span class="ps-action-arrow" aria-hidden="true">↓</span>
+        </a>
+        <a class="ps-action-card is-primary ps-reveal-item" href="downloads/stay-unseen-edge-1.0.2.zip" download>
+          <span class="ps-action-info">
+            <span class="ps-action-tag">Ed</span>
+            <span>Edge build<span class="ps-action-sub">declarativeNetRequest · MV3</span></span>
+          </span>
+          <span class="ps-action-arrow" aria-hidden="true">↓</span>
+        </a>
+        <a class="ps-action-card ps-reveal-item" href="downloads/stay-unseen-firefox-1.0.2.zip" download>
+          <span class="ps-action-info">
+            <span class="ps-action-tag">Fx</span>
+            <span>Firefox build<span class="ps-action-sub">blocking webRequest · MV3</span></span>
+          </span>
+          <span class="ps-action-arrow" aria-hidden="true">↓</span>
+        </a>
+      </div>
+
+      <ol class="ps-steps ps-reveal-item">
+        <li><b>Unzip</b> the download somewhere you will keep it — the browser loads the folder from where it sits.</li>
+        <li><b>Open your extensions page.</b> <code>chrome://extensions</code>, <code>edge://extensions</code>, or <code>about:debugging#/runtime/this-firefox</code>.</li>
+        <li><b>Turn on developer mode</b> (Chrome and Edge, top right). Firefox uses <b>Load Temporary Add-on</b> instead.</li>
+        <li><b>Load unpacked</b> and pick the unzipped folder. On Firefox, pick its <code>manifest.json</code>.</li>
+        <li><b>Open Instagram, Facebook or Messenger</b> and click the icon. All six features start switched on.</li>
+        <li><b>Check it is live:</b> open the Status drawer. Network blocking should read active, and the patch rows fill in as you use each site.</li>
+      </ol>
+    </section>
+
+    <footer class="ps-footer ps-container ps-reveal-item">
+      <span>Stay Unseen v1.0.2 · no server · no analytics · nothing leaves your browser</span>
+      <span>
+        <a href="privacy.html">Privacy policy</a> · Independent project, not affiliated with
+        Meta Platforms, Instagram, Facebook, or Microsoft
+      </span>
+    </footer>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
