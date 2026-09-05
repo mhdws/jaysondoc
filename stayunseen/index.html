@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js" data-ps-theme="violet">
+<html lang="en" class="no-js" data-ps-theme="periwinkle">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Stay Unseen — view stories and read messages without sending the signal</title>
 <meta name="description" content="Stay Unseen is a browser extension that blocks Instagram, Facebook and Messenger story views, read receipts and typing indicators before they leave your browser. No server, no account, nothing collected." />
-<meta name="theme-color" content="#c084fc" />
+<meta name="theme-color" content="#577eff" />
 <meta property="og:title" content="Stay Unseen — look first, stay unseen" />
 <meta property="og:description" content="Blocks story views, read receipts and typing indicators on Instagram, Facebook and Messenger. Everything stays in your browser." />
 <meta property="og:type" content="website" />
@@ -22,7 +22,7 @@ document.documentElement.classList.remove("no-js");
 </script>
 </head>
 <body>
-<div class="ps-app" id="psApp" data-ps-theme="violet">
+<div class="ps-app" id="psApp" data-ps-theme="periwinkle">
 
   <canvas id="ps3dCanvas" aria-hidden="true"></canvas>
   <div class="ps-grid-3d" aria-hidden="true"></div>
@@ -49,14 +49,14 @@ document.documentElement.classList.remove("no-js");
       <span class="ps-status-pill">v1.0.2 · local only</span>
 
       <div class="ps-theme-switch" role="group" aria-label="Accent colour">
-        <button type="button" class="ps-theme-btn" data-ps-theme-btn="violet" style="--ps-swatch-h: 272" aria-pressed="true">
+        <button type="button" class="ps-theme-btn" data-ps-theme-btn="periwinkle" style="--ps-swatch-h: 226" aria-pressed="true">
+          <span class="ps-theme-dot" aria-hidden="true"></span><span class="ps-theme-label">Periwinkle</span>
+        </button>
+        <button type="button" class="ps-theme-btn" data-ps-theme-btn="steel" style="--ps-swatch-h: 209" aria-pressed="false">
+          <span class="ps-theme-dot" aria-hidden="true"></span><span class="ps-theme-label">Steel</span>
+        </button>
+        <button type="button" class="ps-theme-btn" data-ps-theme-btn="violet" style="--ps-swatch-h: 253" aria-pressed="false">
           <span class="ps-theme-dot" aria-hidden="true"></span><span class="ps-theme-label">Violet</span>
-        </button>
-        <button type="button" class="ps-theme-btn" data-ps-theme-btn="blue" style="--ps-swatch-h: 210" aria-pressed="false">
-          <span class="ps-theme-dot" aria-hidden="true"></span><span class="ps-theme-label">Blue</span>
-        </button>
-        <button type="button" class="ps-theme-btn" data-ps-theme-btn="green" style="--ps-swatch-h: 139" aria-pressed="false">
-          <span class="ps-theme-dot" aria-hidden="true"></span><span class="ps-theme-label">Green</span>
         </button>
       </div>
     </div>
@@ -84,27 +84,30 @@ document.documentElement.classList.remove("no-js");
 
         <p class="ps-section-label">Get it</p>
 
+        <!-- Store links. Replace CHROME_EXTENSION_ID / EDGE_EXTENSION_ID with the real
+             listing IDs once each submission is approved; the Firefox slug is set at
+             submission time on addons.mozilla.org. -->
         <div class="ps-action-grid">
-          <a class="ps-action-card is-primary" href="downloads/stay-unseen-chrome-1.0.2.zip" download>
+          <a class="ps-action-card is-primary" href="https://chromewebstore.google.com/detail/stay-unseen/CHROME_EXTENSION_ID" rel="noopener">
             <span class="ps-action-info">
               <span class="ps-action-tag">Ch</span>
-              <span>Chrome<span class="ps-action-sub">zip · 100 kb · v1.0.2</span></span>
+              <span>Chrome Web Store<span class="ps-action-sub">Chrome · Brave · Vivaldi · Opera</span></span>
             </span>
-            <span class="ps-action-arrow" aria-hidden="true">↓</span>
+            <span class="ps-action-arrow" aria-hidden="true">↗</span>
           </a>
-          <a class="ps-action-card is-primary" href="downloads/stay-unseen-edge-1.0.2.zip" download>
+          <a class="ps-action-card is-primary" href="https://microsoftedge.microsoft.com/addons/detail/EDGE_EXTENSION_ID" rel="noopener">
             <span class="ps-action-info">
               <span class="ps-action-tag">Ed</span>
-              <span>Edge<span class="ps-action-sub">zip · 100 kb · v1.0.2</span></span>
+              <span>Edge Add-ons<span class="ps-action-sub">Microsoft Edge</span></span>
             </span>
-            <span class="ps-action-arrow" aria-hidden="true">↓</span>
+            <span class="ps-action-arrow" aria-hidden="true">↗</span>
           </a>
-          <a class="ps-action-card" href="downloads/stay-unseen-firefox-1.0.2.zip" download>
+          <a class="ps-action-card" href="https://addons.mozilla.org/firefox/addon/stay-unseen/" rel="noopener">
             <span class="ps-action-info">
               <span class="ps-action-tag">Fx</span>
-              <span>Firefox<span class="ps-action-sub">zip · 100 kb · v1.0.2</span></span>
+              <span>Firefox Add-ons<span class="ps-action-sub">Firefox · Firefox for Android</span></span>
             </span>
-            <span class="ps-action-arrow" aria-hidden="true">↓</span>
+            <span class="ps-action-arrow" aria-hidden="true">↗</span>
           </a>
           <a class="ps-action-card" href="#screens">
             <span class="ps-action-info">
@@ -123,7 +126,7 @@ document.documentElement.classList.remove("no-js");
 
         <div class="ps-card-3d" id="psCard">
           <div class="ps-card-inner">
-            <img class="ps-popup-img" src="assets/popup-main.png" width="372" height="795"
+            <img class="ps-popup-img" src="assets/popup-main.png" width="372" height="794"
                  alt="The Stay Unseen popup: header reading “Protecting Instagram, Facebook & Messenger”, four counters totalling 684 blocked signals, and six feature toggles all switched on." />
             <div class="ps-holo-grid" aria-hidden="true"></div>
             <div class="ps-glare" aria-hidden="true"></div>
@@ -229,7 +232,7 @@ document.documentElement.classList.remove("no-js");
             <figure class="ps-shot-frame">
               <div class="ps-shot-bar"><span class="ps-shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Stay Unseen — popup</span></div>
               <div class="ps-shot-view">
-                <img src="assets/popup-main.png" width="372" height="795" loading="lazy"
+                <img src="assets/popup-main.png" width="372" height="794" loading="lazy"
                      alt="Popup with all six features enabled: status line reads “Protecting Instagram, Facebook & Messenger”, counters read 684 blocked all time, 260 story views, 289 read receipts, 135 typing signals." />
               </div>
               <figcaption class="ps-shot-foot"><span>372 × 795 css px</span><span>everything on</span></figcaption>
@@ -262,7 +265,7 @@ document.documentElement.classList.remove("no-js");
             <figure class="ps-shot-frame">
               <div class="ps-shot-bar"><span class="ps-shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Stay Unseen — mixed toggles</span></div>
               <div class="ps-shot-view">
-                <img src="assets/popup-per-feature.png" width="372" height="795" loading="lazy"
+                <img src="assets/popup-per-feature.png" width="372" height="794" loading="lazy"
                      alt="Popup with Instagram typing, Facebook Stories and Messenger typing switched off; those rows are dimmed while the other three stay on." />
               </div>
               <figcaption class="ps-shot-foot"><span>372 × 795 css px</span><span>3 of 6 off</span></figcaption>
@@ -288,7 +291,7 @@ document.documentElement.classList.remove("no-js");
             <figure class="ps-shot-frame">
               <div class="ps-shot-bar"><span class="ps-shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Stay Unseen — paused</span></div>
               <div class="ps-shot-view">
-                <img src="assets/popup-paused.png" width="372" height="795" loading="lazy"
+                <img src="assets/popup-paused.png" width="372" height="794" loading="lazy"
                      alt="Popup with every feature off. The status line warns “Paused — receipts are being sent” and all six toggles are grey." />
               </div>
               <figcaption class="ps-shot-foot"><span>372 × 795 css px</span><span>all off</span></figcaption>
@@ -373,8 +376,8 @@ document.documentElement.classList.remove("no-js");
             <figure class="ps-shot-frame">
               <div class="ps-shot-bar"><span class="ps-shot-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Stay Unseen — light scheme</span></div>
               <div class="ps-shot-view">
-                <img src="assets/popup-main-light.png" width="372" height="795" loading="lazy"
-                     alt="The same popup rendered in light mode: white panels, dark text, the same violet accent." />
+                <img src="assets/popup-main-light.png" width="372" height="794" loading="lazy"
+                     alt="The same popup rendered in light mode: white panels, dark text, the same periwinkle accent hue." />
               </div>
               <figcaption class="ps-shot-foot"><span>372 × 795 css px</span><span>prefers-color-scheme: light</span></figcaption>
             </figure>
@@ -387,7 +390,7 @@ document.documentElement.classList.remove("no-js");
                 browser is doing.
               </p>
               <p>
-                Same markup, same layout, same violet accent — only the surface and text
+                Same markup, same layout, same accent hue — only the surface and text
                 tokens change.
               </p>
             </div>
@@ -448,16 +451,31 @@ document.documentElement.classList.remove("no-js");
         </article>
       </div>
 
-      <figure class="ps-figure ps-reveal-item">
+      <figure class="ps-figure is-wide ps-reveal-item">
         <div class="ps-figure-frame">
-          <img src="assets/whatitdoes.jpeg" width="1024" height="1024" loading="lazy"
-               alt="Four-panel comparison. Left column, without the extension: a sent message reads “Seen just now” and a story viewer list shows a viewer's photo and name. Right column, with Stay Unseen: the same message reads only “Delivered” and the viewer entry is blank." />
+          <img src="assets/shot-how-it-works-1280x800.jpg" width="1280" height="800" loading="lazy"
+               alt="Three numbered steps — you open a story or DM, Stay Unseen drops the signal, nobody sees a thing — above a Recent blocks list with timestamped entries for Instagram Stories, Instagram DMs, Messenger typing and Facebook Messages, and a panel listing that nothing leaves your browser." />
         </div>
-        <figcaption>
-          Illustration, not a screenshot — the difference the two layers make, side by side.
-          Every popup image on this page is a real capture; this one is drawn.
-        </figcaption>
+        <figcaption>The path a seen signal takes, and the blocks it produces.</figcaption>
       </figure>
+
+      <div class="ps-figure-strip">
+        <figure class="ps-figure is-wide ps-reveal-item">
+          <div class="ps-figure-frame">
+            <img src="assets/shot-overview-1280x800.jpg" width="1280" height="800" loading="lazy"
+                 alt="Overview: the headline “Look without being seen” beside the popup showing 847 signals blocked all time, split into 331 story views, 402 read receipts and 114 typing signals, with all six feature toggles on." />
+          </div>
+          <figcaption>What it does, and what it has already stopped.</figcaption>
+        </figure>
+
+        <figure class="ps-figure is-wide ps-reveal-item">
+          <div class="ps-figure-frame">
+            <img src="assets/shot-controls-1280x800.jpg" width="1280" height="800" loading="lazy"
+                 alt="Controls: the six feature rows each with their own blocked count and switch, a Display section holding “Keep unread in the UI”, and notes explaining that off means off and counters are per feature." />
+          </div>
+          <figcaption>Six independent switches, each counted separately.</figcaption>
+        </figure>
+      </div>
     </section>
 
     <hr class="ps-rule" />
@@ -546,43 +564,55 @@ document.documentElement.classList.remove("no-js");
         <p class="ps-panel-tag">// install</p>
         <h2 class="ps-section-title">Load it in <em>about a minute</em></h2>
         <p class="ps-section-copy">
-          Version 1.0.2, built for each browser's own manifest. Download the zip for yours,
-          then load it unpacked.
+          Version 1.0.2, published to each browser's own store and built against its own
+          manifest. Pick yours, add it, and it starts working on the next page load.
         </p>
       </div>
 
       <div class="ps-install-grid">
-        <a class="ps-action-card is-primary ps-reveal-item" href="downloads/stay-unseen-chrome-1.0.2.zip" download>
+        <a class="ps-action-card is-primary ps-reveal-item" href="https://chromewebstore.google.com/detail/stay-unseen/CHROME_EXTENSION_ID" rel="noopener">
           <span class="ps-action-info">
             <span class="ps-action-tag">Ch</span>
-            <span>Chrome build<span class="ps-action-sub">declarativeNetRequest · MV3</span></span>
+            <span>Chrome Web Store<span class="ps-action-sub">declarativeNetRequest · MV3</span></span>
           </span>
-          <span class="ps-action-arrow" aria-hidden="true">↓</span>
+          <span class="ps-action-arrow" aria-hidden="true">↗</span>
         </a>
-        <a class="ps-action-card is-primary ps-reveal-item" href="downloads/stay-unseen-edge-1.0.2.zip" download>
+        <a class="ps-action-card is-primary ps-reveal-item" href="https://microsoftedge.microsoft.com/addons/detail/EDGE_EXTENSION_ID" rel="noopener">
           <span class="ps-action-info">
             <span class="ps-action-tag">Ed</span>
-            <span>Edge build<span class="ps-action-sub">declarativeNetRequest · MV3</span></span>
+            <span>Edge Add-ons<span class="ps-action-sub">declarativeNetRequest · MV3</span></span>
           </span>
-          <span class="ps-action-arrow" aria-hidden="true">↓</span>
+          <span class="ps-action-arrow" aria-hidden="true">↗</span>
         </a>
-        <a class="ps-action-card ps-reveal-item" href="downloads/stay-unseen-firefox-1.0.2.zip" download>
+        <a class="ps-action-card ps-reveal-item" href="https://addons.mozilla.org/firefox/addon/stay-unseen/" rel="noopener">
           <span class="ps-action-info">
             <span class="ps-action-tag">Fx</span>
-            <span>Firefox build<span class="ps-action-sub">blocking webRequest · MV3</span></span>
+            <span>Firefox Add-ons<span class="ps-action-sub">blocking webRequest · MV3</span></span>
           </span>
-          <span class="ps-action-arrow" aria-hidden="true">↓</span>
+          <span class="ps-action-arrow" aria-hidden="true">↗</span>
         </a>
       </div>
 
       <ol class="ps-steps ps-reveal-item">
-        <li><b>Unzip</b> the download somewhere you will keep it — the browser loads the folder from where it sits.</li>
-        <li><b>Open your extensions page.</b> <code>chrome://extensions</code>, <code>edge://extensions</code>, or <code>about:debugging#/runtime/this-firefox</code>.</li>
-        <li><b>Turn on developer mode</b> (Chrome and Edge, top right). Firefox uses <b>Load Temporary Add-on</b> instead.</li>
-        <li><b>Load unpacked</b> and pick the unzipped folder. On Firefox, pick its <code>manifest.json</code>.</li>
-        <li><b>Open Instagram, Facebook or Messenger</b> and click the icon. All six features start switched on.</li>
+        <li><b>Open the listing</b> for your browser above. Chrome's page also works in Brave, Vivaldi and Opera.</li>
+        <li><b>Add it.</b> <b>Add to Chrome</b>, <b>Get</b> on Edge, or <b>Add to Firefox</b>, then confirm the permission prompt — access to instagram.com, facebook.com and messenger.com, and nothing else.</li>
+        <li><b>Pin the icon</b> so the counters and toggles are one click away. Chrome and Edge hide new extensions behind the puzzle-piece button; Firefox uses the toolbar overflow menu.</li>
+        <li><b>Reload any Instagram, Facebook or Messenger tab</b> you already had open. The page patch installs at document start, so tabs opened before the install are not protected until they reload.</li>
+        <li><b>Click the icon.</b> All six features start switched on, and the header names what is currently protected.</li>
         <li><b>Check it is live:</b> open the Status drawer. Network blocking should read active, and the patch rows fill in as you use each site.</li>
       </ol>
+
+      <p class="ps-install-note ps-reveal-item">
+        Updates arrive through the store automatically. Prefer to load it unpacked, or
+        want to read the code first? The per-browser source zips are still in
+        <a href="downloads/stay-unseen-chrome-1.0.2.zip" download>Chrome</a>,
+        <a href="downloads/stay-unseen-edge-1.0.2.zip" download>Edge</a> and
+        <a href="downloads/stay-unseen-firefox-1.0.2.zip" download>Firefox</a> builds —
+        unzip one, then use <b>Load unpacked</b> on <code>chrome://extensions</code> or
+        <code>edge://extensions</code> with developer mode on, or <b>Load Temporary
+        Add-on</b> on <code>about:debugging#/runtime/this-firefox</code> and pick the
+        folder's <code>manifest.json</code>.
+      </p>
     </section>
 
     <footer class="ps-footer ps-container ps-reveal-item">

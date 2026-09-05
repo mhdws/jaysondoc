@@ -15,14 +15,17 @@
 
   /* --- accent switch ------------------------------------------------------ */
 
-  var THEME_HUES = { green: 139, blue: 210, violet: 272 };
+  /* All three hues are read off the extension icon: the periwinkle of its frame,
+     the steel of the badge circle, the purple half of the shield. */
+  var THEME_HUES = { steel: 209, periwinkle: 226, violet: 253 };
+  var DEFAULT_THEME = "periwinkle";
   var STORE_KEY = "stayUnseenSiteAccent";
   var themeButtons = Array.prototype.slice.call(
     document.querySelectorAll("[data-ps-theme-btn]")
   );
 
   function applyTheme(name, remember) {
-    if (!THEME_HUES.hasOwnProperty(name)) name = "violet";
+    if (!THEME_HUES.hasOwnProperty(name)) name = DEFAULT_THEME;
 
     app.setAttribute("data-ps-theme", name);
     // Mirrored onto <html> so the overscroll area and browser UI follow too.
@@ -51,7 +54,7 @@
 
   var stored = null;
   try { stored = localStorage.getItem(STORE_KEY); } catch (err) {}
-  applyTheme(stored || app.getAttribute("data-ps-theme") || "violet", false);
+  applyTheme(stored || app.getAttribute("data-ps-theme") || DEFAULT_THEME, false);
 
   /* --- header entry ------------------------------------------------------- */
 
@@ -182,8 +185,8 @@
   var raf = null;
 
   function hue() {
-    var name = app.getAttribute("data-ps-theme") || "violet";
-    return THEME_HUES.hasOwnProperty(name) ? THEME_HUES[name] : 272;
+    var name = app.getAttribute("data-ps-theme") || DEFAULT_THEME;
+    return THEME_HUES.hasOwnProperty(name) ? THEME_HUES[name] : THEME_HUES[DEFAULT_THEME];
   }
 
   function resize() {

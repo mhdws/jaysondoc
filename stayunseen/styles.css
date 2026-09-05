@@ -11,7 +11,7 @@
 /* The background is painted on <html> too so the overscroll area and the mobile
    browser chrome match instead of flashing white. */
 html {
-  --ps-h: 272;
+  --ps-h: 226;
   background-color: hsl(calc(var(--ps-h) + 11), 50%, 1.6%);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -19,9 +19,9 @@ html {
 }
 
 /* Mirrors of the accent switch, so the overscroll colour follows the theme. */
-html[data-ps-theme="violet"] { --ps-h: 272; }
-html[data-ps-theme="blue"] { --ps-h: 210; }
-html[data-ps-theme="green"] { --ps-h: 139; }
+html[data-ps-theme="periwinkle"] { --ps-h: 226; }
+html[data-ps-theme="steel"] { --ps-h: 209; }
+html[data-ps-theme="violet"] { --ps-h: 253; }
 
 body {
   margin: 0;
@@ -37,11 +37,13 @@ body {
 }
 
 /* Every colour is derived from this one hue, so the theme buttons only have to
-   change a single number. 272 is the popup's own violet accent. */
-.ps-app { --ps-h: 272; }
-.ps-app[data-ps-theme="violet"] { --ps-h: 272; }
-.ps-app[data-ps-theme="blue"] { --ps-h: 210; }
-.ps-app[data-ps-theme="green"] { --ps-h: 139; }
+   change a single number. All three are read off the extension icon: 226 is the
+   periwinkle of its frame and ghost, 209 the steel of the badge circle, 253 the
+   purple half of the shield. */
+.ps-app { --ps-h: 226; }
+.ps-app[data-ps-theme="periwinkle"] { --ps-h: 226; }
+.ps-app[data-ps-theme="steel"] { --ps-h: 209; }
+.ps-app[data-ps-theme="violet"] { --ps-h: 253; }
 
 .ps-app {
   --bg: hsl(calc(var(--ps-h) + 11), 50%, 1.6%);
@@ -53,10 +55,6 @@ body {
   --muted: hsl(calc(var(--ps-h) - 10), 12.7%, 69%);
   --line: hsla(calc(var(--ps-h) + 0.1), 100%, 66.7%, 0.22);
   --panel-bg: hsla(calc(var(--ps-h) + 1), 55.6%, 5.3%, 0.75);
-
-  /* The extension icon's own ramp: Facebook blue folding through violet into
-     Instagram's magenta and orange. Fixed across themes — it is artwork. */
-  --brand-gradient: linear-gradient(135deg, #2d68f0 0%, #8b4bc8 46%, #d62976 74%, #f77737 100%);
 
   position: relative;
   width: 100%;
@@ -928,7 +926,7 @@ body {
 }
 
 /* No grayscale filter here, unlike the template's portrait: the popup's own
-   accent violet is the point of the shot. */
+   accent periwinkle is the point of the shot. */
 .ps-popup-img {
   display: block;
   width: 100%;
@@ -1434,6 +1432,20 @@ body {
   text-align: center;
 }
 
+/* The store captures are 16:10, so they read fine at the container's full width. */
+.ps-figure.is-wide { max-width: none; }
+
+/* Two 16:10 shots side by side; each still gets ~540 px, enough for the popup
+   panel inside them to stay legible. Stacks under 940px with the other grids. */
+.ps-figure-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 30px);
+  align-items: start;
+}
+
+.ps-figure-strip .ps-figure { margin-top: clamp(18px, 3vw, 30px); }
+
 .ps-figure-frame {
   padding: 10px;
   border-radius: 18px;
@@ -1596,7 +1608,8 @@ body {
 
 .ps-steps b { color: var(--text); font-weight: 650; }
 
-.ps-steps code {
+.ps-steps code,
+.ps-install-note code {
   padding: 1px 6px;
   border-radius: 5px;
   background: hsla(calc(var(--ps-h) + 0.1), 100%, 66.7%, 0.12);
@@ -1604,6 +1617,28 @@ body {
   font-family: "DM Mono", monospace;
   font-size: 0.86em;
 }
+
+/* Unpacked-install fallback under the store steps: same measure as the steps, set
+   back so it reads as a footnote to them rather than a seventh step. */
+.ps-install-note {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.ps-install-note b { color: var(--text); font-weight: 650; }
+
+.ps-install-note a {
+  color: var(--accent-soft);
+  text-decoration-color: hsla(calc(var(--ps-h) + 0.1), 100%, 66.7%, 0.4);
+  text-underline-offset: 3px;
+}
+
+.ps-install-note a:hover { color: var(--accent); }
 
 /* --- prose (privacy page) ------------------------------------------------- */
 
@@ -1707,6 +1742,7 @@ body {
 @media (max-width: 940px) {
   .ps-signal-grid,
   .ps-layer-grid,
+  .ps-figure-strip,
   .ps-install-grid { grid-template-columns: minmax(0, 1fr); }
 
   .ps-privacy-grid { grid-template-columns: minmax(0, 1fr); }
@@ -1727,9 +1763,9 @@ body {
     order: -1;
     min-height: 620px;
     /* The card now fills the stage, so the badges cannot orbit it without covering
-       the screenshot. Let them wrap into a caption row underneath instead. */
-    flex-wrap: wrap;
-    align-content: center;
+       the screenshot. Stack them underneath instead — a row would leave the card
+       sitting off-centre inside the rings. */
+    flex-direction: column;
     gap: 14px;
   }
 
